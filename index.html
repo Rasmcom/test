@@ -912,6 +912,7 @@
  <script>
   const input = document.getElementById("userName");
 
+	 
   // حفظ عند التغيير
   input.addEventListener("input", () => {
     database.ref("pageData/userName").set(input.value);
@@ -2201,17 +2202,44 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'961557bfe0b278a7',t:'MTc1Mjg3Njk3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>
-  // إعدادات Firebase
-  const firebaseConfig = {
-    databaseURL: "https://test-7c206-default-rtdb.firebaseio.com/"
-  };
+<!-- Firebase مكتبات -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
-  // تشغيل Firebase
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+<!-- كود الحفظ والاسترجاع -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // إعدادات Firebase
+    const firebaseConfig = {
+      databaseURL: "https://test-7c206-default-rtdb.firebaseio.com/"
+    };
+
+    // تهيئة Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // الحصول على العنصر
+    const input = document.getElementById("userName");
+
+    // تحميل البيانات عند فتح الصفحة
+    database.ref("pageData/userName").on("value", snapshot => {
+      if (snapshot.exists()) {
+        input.value = snapshot.val();
+        console.log("✅ تم تحميل البيانات:", snapshot.val());
+      } else {
+        console.log("⚠️ لا توجد بيانات محفوظة.");
+      }
+    });
+
+    // حفظ البيانات عند التغيير
+    input.addEventListener("input", () => {
+      database.ref("pageData/userName").set(input.value);
+      console.log("✅ تم حفظ البيانات:", input.value);
+    });
+  });
 </script>
+
+
 
 </body>
 </html>
